@@ -1,0 +1,8 @@
+
+            // Load the Speechify-optimized content
+            fetch('briefing.txt')
+                .then(response => response.text())
+                .then(text => {
+                    document.getElementById('speechify-content').innerText = text;
+                })
+                .catch(error => {script
