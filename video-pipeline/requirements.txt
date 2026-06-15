@@ -1,0 +1,6 @@
+# Core dependency — HTTP client used by every module.
+requests>=2.31,<3
+
+# Optional: only needed if you turn on AI caption generation (CAPTIONS_USE_AI=1).
+# Comment out if you only use template-based captions.
+anthropic>=0.40

@@ -1,0 +1,43 @@
+{
+  "_comment": "Copy to config.json and adjust. Controls which platforms get posted to, how each caption is shaped, and platform-specific publish options. {base} in a template is replaced by the base caption you pass at run time.",
+
+  "platforms": ["linkedin", "youtube", "tiktok", "instagram"],
+
+  "captions": {
+    "linkedin": {
+      "template": "{base}\n\nWhat's your take? 👇",
+      "max_chars": 3000,
+      "hashtags": ["#contentcreation", "#creators"]
+    },
+    "youtube": {
+      "template": "{base}",
+      "max_chars": 5000,
+      "hashtags": ["#shorts"]
+    },
+    "tiktok": {
+      "template": "{base}",
+      "max_chars": 2200,
+      "hashtags": ["#fyp", "#creator"]
+    },
+    "instagram": {
+      "template": "{base}",
+      "max_chars": 2200,
+      "hashtags": ["#reels", "#creator"]
+    }
+  },
+
+  "platform_options": {
+    "youtube": {
+      "title": "Daily Creator Briefing",
+      "visibility": "public",
+      "categoryId": 24
+    },
+    "instagram": {
+      "reels": true
+    },
+    "tiktok": {
+      "privacyLevel": "PUBLIC_TO_EVERYONE"
+    },
+    "linkedin": {}
+  }
+}
