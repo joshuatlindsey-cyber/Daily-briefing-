@@ -19,24 +19,32 @@ I found **~73 verified prospects**, not 100. The reason is a genuine finding, no
 
 ---
 
-## ⭐ Suggested Top 10 shortlist (best reviews + cleanly no website)
+## ⭐ Shortlist, ranked by public review volume (verified round 2)
 
-These are the strongest prospects — high, *confirmed* review counts and no own website.
+Each of these was re-checked across **every** public platform to confirm (a) the real review count, (b) that the review *text* is publicly readable (so it can be repurposed as testimonials/social proof on the new site), and (c) that they still have no own website. **Counts are snippet-derived** (the directories block automated reading but display fine in a browser) — eyeball each profile to lock the exact number before publishing.
 
-| Rank | Business | Trade | Area | Reviews | Phone | Source |
-|---|---|---|---|---|---|---|
-| 1 | **NC Lupu Ltd** (Nicolae Lupu) | Electrician (NICEIC, EV, rewires) | Edgware HA8 | Checkatrade **10/10 from ~220** | gated | [link](https://www.checkatrade.com/trades/nclupultd) |
-| 2 | **Tilerservice** (Maciej) | Tiler / bathrooms | Mill Hill NW7 / Barnet | MyBuilder **~4.9 from ~586** | gated | [link](https://www.mybuilder.com/tilers/mill-hill/nw7) |
-| 3 | **Clifton Property Solutions** | Handyman / decorator | Finchley N3 | Checkatrade **10/10 from ~238** | 07803 725757 | [link](https://www.checkatrade.com/trades/cliftonpropertysolutions) |
-| 4 | **Arthur Plastering** (Artur Rexhepi) | Plasterer / renderer | East Barnet EN4 | MyBuilder **5/5 from ~212** | gated | [link](https://www.mybuilder.com/profile/artur_rexhepi) |
-| 5 | **Network Trades Services Ltd** | Plumber / heating (CIPHE) | Barnet EN4 | Checkatrade **5.0 from ~122** | 020 8441 1004 | [link](https://www.checkatrade.com/trades/networktradesserviceslimited) |
-| 6 | **A&B Electrical Services** (Altin Basha) | Electrician | Barnet / NW London | Checkatrade **9.7/10 from ~77** | gated | [link](https://www.checkatrade.com/trades/aandbelectricalservices) |
-| 7 | **J.S Carpentry** (John Skell) | Carpenter / joiner / kitchens | North Finchley N12 | MyBuilder **100% from 76** | gated | [link](https://www.mybuilder.com/profile/view/johnskell) |
-| 8 | **Finchley Garden Care** | Gardener | Finchley N3 | Yell **5.0 from ~49** | 07525 534085 | [link](https://www.yell.com/s/garden+services-finchley-north+london.html) |
-| 9 | **D Stone Paving Contractors Ltd** | Driveways / paving | Mill Hill NW7 | Yell **5.0 from ~48** | 07490 707371 | [link](https://www.yell.com/s/paving+and+driveways-golders+green-north+west+london.html) |
-| 10 | **A&A and Sons** | Roofer | Southgate N14 | TrustATrader **4.93 from ~46** (Facebook only) | 07956 564966 | [link](https://www.trustatrader.com/traders/aa-and-sons-roofers-roofing-enfield) |
+| Rank | Business | Trade | Area | Public reviews (where) | Rating | Text usable? | Phone |
+|---|---|---|---|---|---|---|---|
+| 1 | **Tilerservice** (Maciej) | Tiler / bathrooms | Mill Hill NW7 | **~586** (MyBuilder) | 4.9/5 | Yes | gated (via MyBuilder) |
+| 2 | **Clifton Property Solutions** | Handyman / decorator | Finchley N3 | **~238** (Checkatrade) + Google 5.0 | 10/10 | Yes | **07803 725757** |
+| 3 | **NC Lupu Ltd** (Nicolae Lupu) | Electrician | Edgware HA8 | **~220** (Checkatrade) | 10/10 | Yes | gated (via Checkatrade) |
+| 4 | **Network Trades Services Ltd** | Plumber / heating | Barnet EN4 | **~142** across 4 platforms (122 Checkatrade) | 5.0 | Yes | **020 8441 1004** |
+| 5 | **Arthur Plastering** (Artur Rexhepi) | Plasterer / renderer | East Barnet EN4 | **~120–130** (MyBuilder) + Checkatrade | high | Yes | gated (via MyBuilder) |
+| 6 | **A&B Electrical Services** (Altin Basha) | Electrician | Barnet / NW London | **~77** (Checkatrade) | 9.7/10 | Yes | gated (via Checkatrade) |
+| 7 | **J.S Carpentry** (John Skell) | Carpenter / joiner / kitchens | North Finchley N12 | **76** (MyBuilder) | 100% | Yes | gated (via MyBuilder) |
+| 8 | **Finchley Garden Care** | Gardener | Finchley N3 | **~49** (Yell only; = duplicate "M&M Gardens" listing) | 5.0 | Unconfirmed | **07525 534085** |
+| 9 | **A&A and Sons** | Roofer | Southgate N14 | **~46** (TrustATrader) | 4.93/5 | Yes | **07956 564966** |
+| — | ~~D Stone Paving Contractors Ltd~~ | ~~Driveways~~ | Mill Hill NW7 | **DISQUALIFIED** — has own website (dstonepaving.co.uk); first-pass false negative | — | — | — |
 
-**Strong alternates if any of the above don't bite:** Mill Hill Electrical Ltd (41 reviews, NW7), AK Builders (~35–38 reviews, N3), Only Bathrooms (4.99 from ~29), Town & City Roofing (300+ reviews — but already has a TrustATrader microsite, so it's an upsell not a from-scratch build).
+**Review asset = three tiers:**
+- **Tier 1 (big, readable, repurposable):** Tilerservice (~586), Clifton (~238), NC Lupu (~220). Huge testimonial pools you can mine for the site.
+- **Tier 2 (solid):** Network Trades (~142, best multi-platform spread), Arthur Plastering (~120–130).
+- **Tier 3 (modest but fine for a 1-page site):** A&B Electrical (~77), J.S Carpentry (76), Finchley Garden Care (~49), A&A and Sons (~46).
+
+**Caveats that affect the "asset" judgement, not just the count:**
+- **Tilerservice** wins on raw volume but the most-quoted review is dated **2019** — confirm recency; an active 220-at-10/10 (NC Lupu / Clifton) may be a better living asset than a large but stale pool.
+- **Finchley Garden Care** is single-platform (Yell) and its review *text* readability is unconfirmed — weakest of the nine as a content source.
+- **Clifton** and **Network Trades** have the best combo of volume **and** a public phone, so they're the most actionable.
 
 ---
 
@@ -115,7 +123,7 @@ These are the strongest prospects — high, *confirmed* review counts and no own
 ### 6. Plasterers
 | # | Business | Area | Reviews (source) | Phone | Website | Source |
 |---|---|---|---|---|---|---|
-| 1 | Arthur Plastering (Artur Rexhepi) | East Barnet EN4 | MyBuilder 5/5 from ~212 | gated | None found | [link](https://www.mybuilder.com/profile/artur_rexhepi) |
+| 1 | Arthur Plastering (Artur Rexhepi) | East Barnet EN4 | MyBuilder ~120–130 (also Checkatrade) | gated | None found | [link](https://www.mybuilder.com/profile/artur_rexhepi) |
 | 2 | J Carolan Plastering Services (Jack) | Edgware HA8 | TrustATrader 5/5, multiple | gated | None found | [link](https://www.trustatrader.com/traders/j-carolan-plastering-services-plastering-screeding-barnet) |
 | 3 | C Ryan Plastering | Wood Green (borders N11) | MyBuilder 100%, since 2014 | gated | None found | [link](https://www.mybuilder.com/profile/view/mrcryan) |
 | 4 | NW11 Plastering Services | Golders Green NW11 | Checkatrade, positive | gated | **Unverified** | [link](https://www.checkatrade.com/trades/nw11plasteringservices) |
@@ -153,7 +161,7 @@ These are the strongest prospects — high, *confirmed* review counts and no own
 | # | Business | Area | Reviews (source) | Phone | Website | Source |
 |---|---|---|---|---|---|---|
 | 1 | Finchley Garden Care | Finchley N3 | Yell 5.0 from ~49 | 07525 534085 | None found | [link](https://www.yell.com/s/garden+services-finchley-north+london.html) |
-| 2 | D Stone Paving Contractors Ltd | Mill Hill NW7 | Yell 5.0 from ~48 | 07490 707371 | None found | [link](https://www.yell.com/s/paving+and+driveways-golders+green-north+west+london.html) |
+| ~~2~~ | ~~D Stone Paving Contractors Ltd~~ | Mill Hill NW7 | Yell 5.0 from ~48 | 07490 707371 | **HAS WEBSITE — dstonepaving.co.uk (disqualified; round-2 correction)** | [link](https://www.dstonepaving.co.uk/) |
 | 3 | Halcyon Gardens | North Finchley N12 | Google 4.3 from ~8 | 020 8343 4585 | None found | [link](https://www.gardenerscentral.co.uk/gardener/1126196/halcyon-gardens) |
 | 4 | Baystone Paving & Driveways | East Barnet EN4 | Yelp/Facebook *(count unconfirmed)* | 07787 911161 | None found | [link](https://www.yell.com/biz/baystone-paving-and-driveways-barnet-7112668/) |
 | 5 | Amenity Landscaping Ltd | High Barnet EN5 | Yell 5.0 (1); 40+ yrs | 020 8449 5781 | None found | [link](https://www.yell.com/biz/amenity-landscaping-ltd-barnet-2169112/) |
