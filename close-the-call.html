@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Close the Call</title>
+<style>
+:root{
+  --paper:#faf9f6; --card:#ffffff; --ink:#141312; --ink-2:#52514e; --ink-3:#898781;
+  --line:#e1e0d9; --line-2:#c3c2b7;
+  --accent:#1c5cab; --accent-ink:#ffffff; --accent-soft:#eaf1fa;
+  --good:#006300; --good-bg:#e8f3e8; --bad:#d03b3b; --bad-bg:#fbeaea;
+  --warn:#8a5a00; --warn-bg:#fdf3e0;
+  --bar:#2a78d6;
+  --mono:ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --paper:#0d0d0d; --card:#1a1a19; --ink:#f5f4f0; --ink-2:#c3c2b7; --ink-3:#898781;
+    --line:#2c2c2a; --line-2:#383835;
+    --accent:#86b6ef; --accent-ink:#0d1b2e; --accent-soft:#1c2938;
+    --good:#4cc24c; --good-bg:#12240f; --bad:#e66767; --bad-bg:#2e1414;
+    --warn:#e8b458; --warn-bg:#2a2110;
+    --bar:#3987e5;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0d0d0d; --card:#1a1a19; --ink:#f5f4f0; --ink-2:#c3c2b7; --ink-3:#898781;
+  --line:#2c2c2a; --line-2:#383835;
+  --accent:#86b6ef; --accent-ink:#0d1b2e; --accent-soft:#1c2938;
+  --good:#4cc24c; --good-bg:#12240f; --bad:#e66767; --bad-bg:#2e1414;
+  --warn:#e8b458; --warn-bg:#2a2110;
+  --bar:#3987e5;
+}
+:root[data-theme="light"]{
+  --paper:#faf9f6; --card:#ffffff; --ink:#141312; --ink-2:#52514e; --ink-3:#898781;
+  --line:#e1e0d9; --line-2:#c3c2b7;
+  --accent:#1c5cab; --accent-ink:#ffffff; --accent-soft:#eaf1fa;
+  --good:#006300; --good-bg:#e8f3e8; --bad:#d03b3b; --bad-bg:#fbeaea;
+  --warn:#8a5a00; --warn-bg:#fdf3e0;
+  --bar:#2a78d6;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.55;font-size:16px}
+.wrap{max-width:920px;margin:0 auto;padding:28px 20px 80px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+header.top{border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:18px}
+h1{font-size:clamp(30px,5vw,44px);font-weight:800;letter-spacing:-.02em;margin:6px 0 8px;line-height:1.05;text-wrap:balance}
+.sub{color:var(--ink-2);max-width:62ch;margin:0}
+nav.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:18px 0 26px}
+nav.tabs button{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:9px 14px;border:1px solid var(--line-2);background:var(--card);color:var(--ink-2);cursor:pointer;border-radius:4px}
+nav.tabs button[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+nav.tabs button:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+section.tab{display:none}
+section.tab.active{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:20px;margin-bottom:16px}
+.card h2{font-size:19px;font-weight:700;margin:0 0 4px;letter-spacing:-.01em}
+.card .hint{color:var(--ink-3);font-size:13.5px;margin:0 0 14px}
+.check{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line)}
+.check:last-of-type{border-bottom:none}
+.check input{margin-top:4px;accent-color:var(--accent);width:16px;height:16px;flex:none}
+.check label{cursor:pointer}
+.check small{display:block;color:var(--ink-3)}
+.verdict{margin-top:14px;padding:12px 14px;border-radius:4px;font-weight:600;border:1px solid var(--line)}
+.verdict.go{background:var(--good-bg);color:var(--good);border-color:transparent}
+.verdict.no{background:var(--warn-bg);color:var(--warn);border-color:transparent}
+.field{margin-bottom:14px}
+.field label{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:5px}
+.field input[type=text],.field textarea,.field select{width:100%;padding:10px 12px;border:1px solid var(--line-2);border-radius:4px;background:var(--card);color:var(--ink);font:inherit}
+.field textarea{min-height:74px;resize:vertical}
+.btn{font:inherit;font-weight:600;padding:10px 18px;border-radius:4px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer}
+.btn.secondary{background:transparent;color:var(--ink);border-color:var(--line-2)}
+.btn.accent{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.pill{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;padding:3px 9px;border-radius:999px;border:1px solid var(--line-2);color:var(--ink-2)}
+.pill.won{background:var(--good-bg);color:var(--good);border-color:transparent}
+.pill.lost{background:var(--bad-bg);color:var(--bad);border-color:transparent}
+.pill.open{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+.pill.na{background:transparent}
+/* call runner */
+.rules{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px;padding:0;list-style:none}
+.rules li{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;padding:6px 10px;border:1px solid var(--line-2);border-radius:4px;color:var(--ink-2);background:var(--card)}
+.timerbox{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:12px}
+.clock{font-family:var(--mono);font-size:46px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.clock.overrun{color:var(--bad)}
+.stagegrid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:16px}
+.seg{height:8px;border-radius:2px;background:var(--line)}
+.seg.done{background:var(--ink-3)}
+.seg.now{background:var(--accent)}
+.stagehead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.stagehead h3{margin:0;font-size:22px;font-weight:800;letter-spacing:-.01em}
+.stagehead .eyebrow{margin:0}
+.prompts{margin:10px 0 0;padding-left:20px}
+.prompts li{margin-bottom:7px}
+.prompts li strong{font-weight:650}
+.threeq{border-left:3px solid var(--accent);padding:10px 14px;background:var(--accent-soft);border-radius:0 4px 4px 0;margin-top:16px}
+.threeq p{margin:4px 0;font-weight:600}
+.threeq .eyebrow{color:var(--accent)}
+/* scorecard */
+.score-item{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.score-item:last-of-type{border-bottom:none}
+.score-item small{display:block;color:var(--ink-3)}
+.seg3{display:flex;gap:4px}
+.seg3 button{font-family:var(--mono);font-size:12px;width:44px;padding:7px 0;border:1px solid var(--line-2);background:var(--card);color:var(--ink-2);cursor:pointer;border-radius:4px}
+.seg3 button.sel{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.scoretotal{font-family:var(--mono);font-size:15px;margin-top:12px}
+/* tiles */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:16px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 16px}
+.tile .v{font-family:var(--mono);font-size:30px;font-weight:700;letter-spacing:-.02em;line-height:1.1}
+.tile .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-top:4px}
+/* follow ups */
+.fu{display:flex;gap:12px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-left-width:4px;border-radius:4px;margin-bottom:8px;background:var(--card)}
+.fu.due{border-left-color:var(--warn)}
+.fu.overdue{border-left-color:var(--bad)}
+.fu.future{border-left-color:var(--line-2)}
+.fu .who{font-weight:650}
+.fu .what{color:var(--ink-2);font-size:14px}
+.fu .when{font-family:var(--mono);font-size:12px;color:var(--ink-3);margin-left:auto;white-space:nowrap}
+.fu button{font-size:12px;padding:5px 10px}
+/* table */
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);text-align:left;padding:8px 10px;border-bottom:1px solid var(--line-2)}
+td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+/* bars */
+.bar-row{display:grid;grid-template-columns:minmax(140px,240px) 1fr 46px;gap:10px;align-items:center;margin-bottom:8px;font-size:14px}
+.bar-track{height:14px;background:transparent}
+.bar-fill{height:14px;background:var(--bar);border-radius:0 3px 3px 0;min-width:2px}
+.bar-val{font-family:var(--mono);font-size:12.5px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+/* playbook */
+.insight{border-left:3px solid var(--ink);padding:2px 0 2px 14px;margin-bottom:16px}
+.insight h3{margin:0 0 3px;font-size:16px;font-weight:700}
+.insight p{margin:0;color:var(--ink-2);font-size:14.5px}
+details.obj{border:1px solid var(--line);border-radius:4px;margin-bottom:8px;background:var(--card)}
+details.obj summary{padding:12px 14px;font-weight:650;cursor:pointer;list-style:none;display:flex;gap:8px;align-items:baseline}
+details.obj summary::before{content:"+";font-family:var(--mono);color:var(--accent);font-weight:700}
+details.obj[open] summary::before{content:"–"}
+details.obj .body{padding:0 14px 14px;color:var(--ink-2);font-size:14.5px}
+details.obj .body p{margin:0 0 8px}
+details.obj .say{border-left:3px solid var(--accent);padding:8px 12px;background:var(--accent-soft);border-radius:0 4px 4px 0;color:var(--ink);font-size:14.5px;margin-top:6px}
+.footer-note{color:var(--ink-3);font-size:12.5px;font-family:var(--mono);margin-top:30px}
+@media (prefers-reduced-motion: no-preference){
+  .bar-fill{transition:width .3s ease}
+}
+@media (max-width:560px){
+  .score-item{grid-template-columns:1fr}
+  .bar-row{grid-template-columns:110px 1fr 42px}
+}
+</style>
+
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow">Own Your Work · Discovery call operations</div>
+  <h1>Close the Call</h1>
+  <p class="sub">You close the qualified calls you run. The leaks are around the call: who gets booked, how fast you follow up, and what happens after a maybe. This runs the whole loop.</p>
+</header>
+
+<nav class="tabs" role="tablist">
+  <button role="tab" aria-selected="true" data-tab="prep">1 · Prep</button>
+  <button role="tab" aria-selected="false" data-tab="call">2 · Call</button>
+  <button role="tab" aria-selected="false" data-tab="debrief">3 · Debrief</button>
+  <button role="tab" aria-selected="false" data-tab="pipeline">Pipeline</button>
+  <button role="tab" aria-selected="false" data-tab="playbook">Playbook</button>
+</nav>
+
+<!-- PREP -->
+<section class="tab active" id="tab-prep">
+  <div class="card">
+    <h2>Qualification gate</h2>
+    <p class="hint">Run this before a call goes in the calendar. A sales slot spent on a peer chat is a sales slot lost. One of your July slots went to a mutual-advice swap that was never going to buy.</p>
+    <div class="check"><input type="checkbox" id="q1"><label for="q1">This person is a potential buyer, not a peer<small>If they want to swap notes, that is coffee, not a discovery slot.</small></label></div>
+    <div class="check"><input type="checkbox" id="q2"><label for="q2">Still employed, with something to sell<small>5 to 15 years in. A methodology in their head that has never been packaged.</small></label></div>
+    <div class="check"><input type="checkbox" id="q3"><label for="q3">They named a pain, not just a compliment<small>"Love your content" is warmth. "I cannot get anyone to pay me" is a call.</small></label></div>
+    <div class="check"><input type="checkbox" id="q4"><label for="q4">40 minutes confirmed, quiet room, camera on<small>A June call ran ten minutes on bad audio and produced nothing. Confirm the conditions when you confirm the slot.</small></label></div>
+    <div class="check"><input type="checkbox" id="q5"><label for="q5">Booked within 24 hours of their yes<small>A warm booking link left four days is a cooling booking link.</small></label></div>
+    <div class="verdict no" id="gate-verdict">0 of 5. Not a sales call yet. Route them to the free guide, or book a peer coffee and keep the slot.</div>
+  </div>
+
+  <div class="card">
+    <h2>Prospect brief</h2>
+    <p class="hint">Two minutes before the call. Their words, not yours.</p>
+    <div class="field"><label for="p-name">Name</label><input type="text" id="p-name" autocomplete="off"></div>
+    <div class="field"><label for="p-source">Where they came from</label><input type="text" id="p-source" placeholder="Threads DM, IG, referral, Kit clicker" autocomplete="off"></div>
+    <div class="field"><label for="p-words">Their exact words (paste the DM)</label><textarea id="p-words" placeholder="The phrase they used for their problem. You will hand it back to them in the Bridge."></textarea></div>
+    <div class="field"><label>ICP signals</label>
+      <div class="check"><input type="checkbox" class="icp" id="i1"><label for="i1">Parent or carer, time-scarce, risk-averse</label></div>
+      <div class="check"><input type="checkbox" class="icp" id="i2"><label for="i2">Burned by courses before, sceptical by default</label></div>
+      <div class="check"><input type="checkbox" class="icp" id="i3"><label for="i3">Employer must not find out</label></div>
+      <div class="check"><input type="checkbox" class="icp" id="i4"><label for="i4">Building everything except the offer</label></div>
+      <div class="check"><input type="checkbox" class="icp" id="i5"><label for="i5">Cognitively done by 8pm, building in the margins</label></div>
+    </div>
+    <div class="field"><label for="p-angle">Opening angle</label><input type="text" id="p-angle" placeholder="The shared ground you open on. Their trade, their sector, the post they replied to." autocomplete="off"></div>
+    <div class="btnrow">
+      <button class="btn" id="save-prospect">Save brief and arm the call</button>
+    </div>
+    <p class="hint" id="prospect-saved" style="display:none;margin-top:10px"></p>
+  </div>
+</section>
+
+<!-- CALL -->
+<section class="tab" id="tab-call">
+  <ul class="rules">
+    <li>Close on the call. No proposals.</li>
+    <li>Price sits against the cost of staying, not against £999.</li>
+    <li>£100 deposit holds the founder's rate for 90 days.</li>
+    <li>They should talk more than you.</li>
+  </ul>
+  <div class="card">
+    <div class="field"><label for="call-prospect">Who is this call with</label>
+      <select id="call-prospect"><option value="">Quick start (no brief)</option></select>
+    </div>
+    <div id="brief-recall" class="hint" style="display:none"></div>
+    <div class="timerbox">
+      <div class="clock" id="clock">10:00</div>
+      <div>
+        <div class="eyebrow" id="stage-count">Stage 1 of 5</div>
+        <div class="eyebrow" id="total-elapsed">Total 00:00</div>
+      </div>
+      <div class="btnrow" style="margin-left:auto">
+        <button class="btn accent" id="timer-toggle">Start</button>
+        <button class="btn secondary" id="stage-next">Next stage</button>
+        <button class="btn secondary" id="timer-reset">Reset</button>
+      </div>
+    </div>
+    <div class="stagegrid" id="stagegrid"></div>
+    <div class="stagehead">
+      <h3 id="stage-name">Situation</h3>
+      <span class="eyebrow" id="stage-goal"></span>
+    </div>
+    <ul class="prompts" id="stage-prompts"></ul>
+    <div class="threeq">
+      <div class="eyebrow">The three questions. Ask all of them, every call.</div>
+      <p>1. Where do you want to be?</p>
+      <p>2. Where are you now?</p>
+      <p>3. What is it costing you to stay there?</p>
+    </div>
+  </div>
+</section>
+
+<!-- DEBRIEF -->
+<section class="tab" id="tab-debrief">
+  <div class="card">
+    <h2>Scorecard</h2>
+    <p class="hint">Score within an hour of hanging up, while it is honest. 0 = did not happen, 1 = partly, 2 = nailed it.</p>
+    <div class="field"><label for="d-name">Call with</label><input type="text" id="d-name" autocomplete="off"></div>
+    <div id="score-list"></div>
+    <div class="scoretotal" id="score-total">Score: 0 / 20</div>
+  </div>
+  <div class="card">
+    <h2>Outcome</h2>
+    <div class="field"><label for="d-outcome">What happened</label>
+      <select id="d-outcome">
+        <option value="">Choose</option>
+        <option value="won">Closed won. Paid or payment link sent.</option>
+        <option value="deposit">Deposit taken. £100 holds the rate.</option>
+        <option value="maybe">No decision. Needs follow-up.</option>
+        <option value="lost">Not a fit or a clear no.</option>
+        <option value="peer">Not a buyer. Peer or referral source.</option>
+      </select>
+    </div>
+    <div class="field" id="loss-wrap" style="display:none"><label for="d-loss">Why (be honest, this feeds the stats)</label>
+      <select id="d-loss">
+        <option value="price">Price. Cost of staying never got quantified.</option>
+        <option value="partner">Needs to talk to partner. No dated next step set.</option>
+        <option value="trust">Burned before. Did not believe this is different.</option>
+        <option value="timing">Timing or energy. Too stretched to start.</option>
+        <option value="fit">Genuinely not ICP.</option>
+        <option value="noask">You never asked for the commitment.</option>
+      </select>
+    </div>
+    <div class="field"><label for="d-notes">Notes. Their words, the objection, the thing you will open with next time.</label><textarea id="d-notes"></textarea></div>
+    <div class="btnrow"><button class="btn" id="save-call">Log the call</button></div>
+    <p class="hint" id="call-saved" style="display:none;margin-top:10px"></p>
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<section class="tab" id="tab-pipeline">
+  <div class="tiles" id="tiles"></div>
+  <div class="card">
+    <h2>Follow-ups</h2>
+    <p class="hint">The rule: a recap the same day, and never let silence pass 48 hours. One warm prospect went closed-lost after 12 days of quiet. That loss is the reason this list exists.</p>
+    <div id="fu-list"></div>
+  </div>
+  <div class="card">
+    <h2>Where you lose points</h2>
+    <p class="hint">Average scorecard marks across logged calls, weakest first. Practise the bottom two before the next call.</p>
+    <div id="weak-bars"></div>
+  </div>
+  <div class="card">
+    <h2>Call log</h2>
+    <div class="tablewrap"><table id="log-table">
+      <thead><tr><th>Date</th><th>Prospect</th><th>Score</th><th>Outcome</th><th>Notes</th><th></th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+  </div>
+</section>
+
+<!-- PLAYBOOK -->
+<section class="tab" id="tab-playbook">
+  <div class="card">
+    <h2>What your calls actually say</h2>
+    <p class="hint">Read from your pipeline records, May to July 2026. Names removed.</p>
+    <div class="insight"><h3>The call is not the leak. You close qualified ICP calls.</h3><p>Recent true-ICP discovery calls (the defence PM, the ops lead, the therapist, the construction owner) became paying clients. When the right person is on the call, the framework works. Protect what feeds it.</p></div>
+    <div class="insight"><h3>Silence is your biggest loss reason.</h3><p>One warm, replied, ready-to-book prospect went cold and closed-lost after 12+ days without a reply. A warm collaboration link sat unbooked for four days. Nothing in the call needs fixing there. The follow-up does.</p></div>
+    <div class="insight"><h3>Sales slots leak to non-buyers.</h3><p>A July discovery slot went to a peer swapping advice. Pleasant, useful, never a sale. The qualification gate exists so the calendar only fills with people who can say yes.</p></div>
+    <div class="insight"><h3>Short calls convert nothing.</h3><p>A June call ran roughly ten minutes with unusable audio. No situation, no cost, no ask. Confirm 40 protected minutes and a quiet room in the booking message, every time.</p></div>
+    <div class="insight"><h3>Small promises are conversion events.</h3><p>A subscriber who opened seven of seven emails waited days for a recording link you said you would send. Deliver the artefact the same day. Reliability is the pitch for a sceptical, burned-before audience.</p></div>
+  </div>
+
+  <div class="card">
+    <h2>The frame</h2>
+    <p class="hint">Five stages, forty minutes, decision on the call.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Stage</th><th>Time</th><th>Job</th></tr></thead>
+      <tbody>
+        <tr><td>Situation</td><td class="num">10 min</td><td>Their world. Role, years in, the methodology in their head, who depends on them.</td></tr>
+        <tr><td>Problem depth</td><td class="num">10 min</td><td>Show you understand it better than they do. Ask the three questions. Get a number on the cost of staying.</td></tr>
+        <tr><td>Bridge</td><td class="num">10 min</td><td>Hand their own words back. Name the specific gap. Present 80 Day Exit as the fix for that gap, with one matched client story.</td></tr>
+        <tr><td>Ask</td><td class="num">5 min</td><td>State the price plainly, once, against the cost of staying. Then stop talking.</td></tr>
+        <tr><td>Objections</td><td class="num">5 min</td><td>Answer directly. Decision, deposit, or a dated next step before anyone hangs up.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h2>Objection library</h2>
+    <p class="hint">The six that actually come up, from your own transcripts. Say it your way, but keep the shape.</p>
+
+    <details class="obj"><summary>"I've bought courses before and they didn't work."</summary><div class="body">
+      <p>This is the meta-question in nearly every one of your discovery calls. Do not defend courses. Agree with them.</p>
+      <div class="say">"Good. You should be sceptical. Those courses failed because they were generic and nobody was accountable to you. This is one-to-one, built on your material, and I am on the hook for it. What specifically did the last one not do?"</div>
+      <p>Their answer tells you exactly what to promise. Promise only that.</p>
+    </div></details>
+
+    <details class="obj"><summary>"I can't afford it right now."</summary><div class="body">
+      <p>If you quantified the cost of staying in stage two, this objection is already half-answered. Point back at their own number.</p>
+      <div class="say">"You told me staying put is costing you [their number, their words]. £999 against that is not the risky option. And if the timing is genuinely wrong, £100 holds the founder's rate for 90 days. Fully refundable."</div>
+      <p>If you never got a number, that is a scorecard zero, not a price problem.</p>
+    </div></details>
+
+    <details class="obj"><summary>"I need to talk to my partner."</summary><div class="body">
+      <p>For parents this is real, not a dodge. Respect it and make it concrete.</p>
+      <div class="say">"Completely right, you should. What is the first thing they will ask? Let's answer it now so you are not selling this alone at the kitchen table. And let's put 20 minutes in the diary for Thursday so it does not drift."</div>
+      <p>The dated next step is the close. Never end on "let me know".</p>
+    </div></details>
+
+    <details class="obj"><summary>"I don't have the time. I'm done by 8pm."</summary><div class="body">
+      <p>Do not sell effort. Your clients are depleted, not lazy. The 4am starts, the two kids, the no-margin weeks are the norm.</p>
+      <div class="say">"That is exactly who this is built for. Thirty minutes a day, in the margins, with the system doing the remembering. It replaces scrolling, not sleep. If you had five spare hours a week you would not need me."</div>
+    </div></details>
+
+    <details class="obj"><summary>"I'm not sure what I have is worth paying for."</summary><div class="body">
+      <p>The dominant fear across every client you have signed. It is an authority problem wearing a competence mask.</p>
+      <div class="say">"You are good at this. Ten years of doing the work proves that. What you do not have is proof someone will pay, and confidence follows proof, not the other way round. The whole point of the 80 days is getting that first paying client while the salary is still coming in."</div>
+    </div></details>
+
+    <details class="obj"><summary>"My employer can't find out."</summary><div class="body">
+      <p>A hard requirement for your ICP, and one of your strongest cards. Say it plainly.</p>
+      <div class="say">"That is a design constraint, not a problem. It is why this runs on Threads. Nobody from your office is on Threads, there is no video of your face required, and we build it quiet until you choose otherwise. One client took his discovery call from his car so nobody would hear."</div>
+    </div></details>
+
+    <details class="obj"><summary>"Can you send me a proposal to look over?"</summary><div class="body">
+      <p>No. Proposals kill your close rate and you already decided this. The ask hides a real objection. Find it.</p>
+      <div class="say">"I don't do proposals. Everything you need to decide is in this conversation, and a PDF will not answer anything I cannot answer right now. What is actually unresolved for you?"</div>
+      <p>Then handle the real thing, or take the deposit, or set the dated call with the partner. Those are the only three exits.</p>
+    </div></details>
+  </div>
+
+  <div class="card">
+    <h2>Follow-up rules</h2>
+    <p class="hint">Applied automatically when you log a "no decision" call.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>When</th><th>Touch</th></tr></thead>
+      <tbody>
+        <tr><td class="num">Same day</td><td>Recap in their words plus the one thing you promised. Before 6pm.</td></tr>
+        <tr><td class="num">Day 2</td><td>Answer to the open objection, or the matched client story.</td></tr>
+        <tr><td class="num">Day 5</td><td>Value drop. Something useful and specific, no pitch.</td></tr>
+        <tr><td class="num">Day 9</td><td>Direct close. "Shall I book you in this week?" Worked on a June prospect, word for word.</td></tr>
+        <tr><td class="num">Day 12</td><td>Close the file. A clean "seems like now is not the time" beats a zombie pipeline.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <p class="footer-note">Built from your discovery call transcripts, prospect reports and tracker, May to July 2026. Data stays in this browser. Names anonymised.</p>
+</section>
+</div>
+
+<script>
+(function(){
+"use strict";
+/* ---------- storage ---------- */
+var KEY="ctc.v1";
+function load(){try{var raw=localStorage.getItem(KEY);return raw?JSON.parse(raw):{prospects:[],calls:[]};}catch(e){return {prospects:[],calls:[]};}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+var state=load();
+function uid(){return "id"+Math.random().toString(36).slice(2,10);}
+function today(){return new Date().toISOString().slice(0,10);}
+function addDays(iso,n){var d=new Date(iso+"T12:00:00");d.setDate(d.getDate()+n);return d.toISOString().slice(0,10);}
+function esc(s){return String(s||"").replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
+
+/* ---------- tabs ---------- */
+var tabs=document.querySelectorAll("nav.tabs button");
+function showTab(name){
+  tabs.forEach(function(b){b.setAttribute("aria-selected",String(b.dataset.tab===name));});
+  document.querySelectorAll("section.tab").forEach(function(s){s.classList.toggle("active",s.id==="tab-"+name);});
+  if(name==="pipeline")renderPipeline();
+  if(name==="call")refreshProspectSelect();
+}
+tabs.forEach(function(b){b.addEventListener("click",function(){showTab(b.dataset.tab);});});
+
+/* ---------- prep: gate ---------- */
+var gateBoxes=["q1","q2","q3","q4","q5"].map(function(id){return document.getElementById(id);});
+var gateVerdict=document.getElementById("gate-verdict");
+function gateUpdate(){
+  var n=gateBoxes.filter(function(b){return b.checked;}).length;
+  if(n===5){gateVerdict.className="verdict go";gateVerdict.textContent="5 of 5. Book it. This is a sales call.";}
+  else if(n>=3){gateVerdict.className="verdict no";gateVerdict.textContent=n+" of 5. Close the gaps before it goes in the diary. The missing ticks are usually where the deal dies.";}
+  else{gateVerdict.className="verdict no";gateVerdict.textContent=n+" of 5. Not a sales call yet. Route them to the free guide, or book a peer coffee and keep the slot.";}
+}
+gateBoxes.forEach(function(b){b.addEventListener("change",gateUpdate);});
+
+/* ---------- prep: brief ---------- */
+var icpLabels=["Parent or carer, time-scarce","Burned by courses","Employer discretion required","Building everything except the offer","Done by 8pm, margin-builder"];
+document.getElementById("save-prospect").addEventListener("click",function(){
+  var name=document.getElementById("p-name").value.trim();
+  if(!name){document.getElementById("p-name").focus();return;}
+  var icp=[];document.querySelectorAll(".icp").forEach(function(c,i){if(c.checked)icp.push(icpLabels[i]);});
+  state.prospects.push({id:uid(),name:name,source:document.getElementById("p-source").value.trim(),
+    words:document.getElementById("p-words").value.trim(),angle:document.getElementById("p-angle").value.trim(),
+    icp:icp,created:today()});
+  save();
+  var msg=document.getElementById("prospect-saved");
+  msg.style.display="block";msg.textContent="Saved. "+name+" is armed in the Call tab.";
+  ["p-name","p-source","p-words","p-angle"].forEach(function(id){document.getElementById(id).value="";});
+  document.querySelectorAll(".icp").forEach(function(c){c.checked=false;});
+  refreshProspectSelect();
+});
+
+/* ---------- call runner ---------- */
+var STAGES=[
+ {name:"Situation",mins:10,goal:"Their world, not your offer",prompts:[
+  "<strong>Open on the shared ground</strong> from your brief. Their trade, their sector, the post they replied to.",
+  "Role, years in, what they have built. Where does the methodology in their head come from?",
+  "Who depends on them? Kids, partner, the mortgage. It matters later.",
+  "The taxi test: \"What would you rant about for forty minutes in the back of a taxi?\"",
+  "Talk ratio check: they should be doing most of the talking already."]},
+ {name:"Problem depth",mins:10,goal:"Understand it better than they do",prompts:[
+  "Ask the three questions, in order. Do not skip the third.",
+  "\"What have you already tried?\" Let them list the courses. Do not interrupt the list.",
+  "<strong>Get a number on the cost of staying.</strong> Salary months lost, the missed year, the health line. Write it down in their words.",
+  "Name the pattern back: building everything except the offer, polished but not posting, saving but not selling.",
+  "Let silence work. The gap after question three is where the truth arrives."]},
+ {name:"Bridge",mins:10,goal:"Their words, your map",prompts:[
+  "Hand back their exact phrase from the DM and from stage two. Not a paraphrase.",
+  "Name the specific gap: not competence, packaging. Not audience, proof.",
+  "Present 80 Day Exit as the fix for <strong>that gap</strong>: five sessions, built on their material, first paying client while the salary still lands.",
+  "One matched client story. The car park call, the sceptic with four dead courses, the single parent with no margin. Pick the one that is them.",
+  "Employer discretion, said plainly, if it came up. It is a design constraint, not a problem."]},
+ {name:"Ask",mins:5,goal:"Say the price, then stop",prompts:[
+  "\"The founder's rate is £999 for the five sessions, with the courses bundled in.\"",
+  "Set it against their stage-two number, not against other coaches.",
+  "Then stop talking. The first person to speak after the price should be them.",
+  "If yes: payment link on the call, session one in the diary before you hang up.",
+  "If wobbling: £100 refundable deposit holds the rate for 90 days."]},
+ {name:"Objections",mins:5,goal:"Decision or a dated next step",prompts:[
+  "Answer the real thing, directly. The library is in the Playbook tab.",
+  "No proposals. Nothing to \"look over\". A PDF answers nothing this conversation cannot.",
+  "Partner conversation? Fine. Book the 20-minute follow-up now, within 48 hours.",
+  "Three exits only: a yes, a deposit, or a dated next step.",
+  "Before hanging up, say what happens next and when they will hear from you. Then do it today."]}
+];
+var stageIdx=0,remaining=STAGES[0].mins*60,elapsed=0,ticking=null;
+var clock=document.getElementById("clock");
+function fmt(s){var neg=s<0;s=Math.abs(s);var m=Math.floor(s/60),ss=s%60;return (neg?"+":"")+String(m).padStart(2,"0")+":"+String(ss).padStart(2,"0");}
+function renderStage(){
+  document.getElementById("stage-name").textContent=STAGES[stageIdx].name;
+  document.getElementById("stage-goal").textContent=STAGES[stageIdx].goal+" · "+STAGES[stageIdx].mins+" min";
+  document.getElementById("stage-count").textContent="Stage "+(stageIdx+1)+" of 5";
+  document.getElementById("stage-prompts").innerHTML=STAGES[stageIdx].prompts.map(function(p){return "<li>"+p+"</li>";}).join("");
+  var grid=document.getElementById("stagegrid");
+  grid.innerHTML=STAGES.map(function(s,i){var c=i<stageIdx?"seg done":(i===stageIdx?"seg now":"seg");return '<div class="'+c+'" title="'+s.name+'"></div>';}).join("");
+  clock.textContent=fmt(remaining);clock.classList.toggle("overrun",remaining<0);
+  document.getElementById("total-elapsed").textContent="Total "+fmt(elapsed);
+}
+function tick(){remaining--;elapsed++;renderStage();}
+document.getElementById("timer-toggle").addEventListener("click",function(){
+  if(ticking){clearInterval(ticking);ticking=null;this.textContent="Resume";}
+  else{ticking=setInterval(tick,1000);this.textContent="Pause";}
+});
+document.getElementById("stage-next").addEventListener("click",function(){
+  if(stageIdx<4){stageIdx++;remaining=STAGES[stageIdx].mins*60;renderStage();}
+});
+document.getElementById("timer-reset").addEventListener("click",function(){
+  if(ticking){clearInterval(ticking);ticking=null;}
+  stageIdx=0;remaining=STAGES[0].mins*60;elapsed=0;
+  document.getElementById("timer-toggle").textContent="Start";renderStage();
+});
+function refreshProspectSelect(){
+  var sel=document.getElementById("call-prospect");var cur=sel.value;
+  sel.innerHTML='<option value="">Quick start (no brief)</option>'+state.prospects.slice().reverse().map(function(p){
+    return '<option value="'+p.id+'">'+esc(p.name)+(p.source?" · "+esc(p.source):"")+"</option>";}).join("");
+  sel.value=cur;showBrief();
+}
+function showBrief(){
+  var sel=document.getElementById("call-prospect");
+  var box=document.getElementById("brief-recall");
+  var p=state.prospects.find(function(x){return x.id===sel.value;});
+  if(!p){box.style.display="none";return;}
+  box.style.display="block";
+  box.innerHTML="<strong>"+esc(p.name)+"</strong>"+(p.angle?" · Open on: "+esc(p.angle):"")+
+    (p.icp.length?"<br>Signals: "+esc(p.icp.join(", ")):"")+
+    (p.words?"<br>Their words: “"+esc(p.words)+"”":"");
+  document.getElementById("d-name").value=p.name;
+}
+document.getElementById("call-prospect").addEventListener("change",showBrief);
+
+/* ---------- debrief ---------- */
+var BEHAVIOURS=[
+ {k:"opened",t:"Opened on their situation, not your offer",s:"First ten minutes were about them."},
+ {k:"threeq",t:"Asked all three questions",s:"Where to, where now, cost of staying."},
+ {k:"cost",t:"Got a number on the cost of staying",s:"Specific figure or date, in their words."},
+ {k:"talk",t:"They talked more than you",s:"Your share under 40 percent."},
+ {k:"burned",t:"Surfaced the burned-before history",s:"And answered why this is different."},
+ {k:"mirror",t:"Handed back their exact words in the Bridge",s:"Their phrase, not your paraphrase."},
+ {k:"story",t:"Told one matched client story",s:"Picked for their fear, not your favourite."},
+ {k:"ask",t:"Asked for the commitment on the call",s:"Price stated plainly, once, then silence."},
+ {k:"objection",t:"Handled objections directly",s:"No proposal, no “think it over” escape hatch."},
+ {k:"next",t:"Set a dated next step before hanging up",s:"Payment, deposit, or a diary entry inside 48 hours."}
+];
+var scores={};
+var scoreList=document.getElementById("score-list");
+scoreList.innerHTML=BEHAVIOURS.map(function(b){
+  return '<div class="score-item"><div>'+b.t+'<small>'+b.s+'</small></div><div class="seg3" data-k="'+b.k+'">'+
+   [0,1,2].map(function(v){return '<button type="button" data-v="'+v+'">'+v+"</button>";}).join("")+"</div></div>";
+}).join("");
+scoreList.addEventListener("click",function(e){
+  var btn=e.target.closest("button[data-v]");if(!btn)return;
+  var g=btn.parentElement,k=g.dataset.k;
+  scores[k]=Number(btn.dataset.v);
+  g.querySelectorAll("button").forEach(function(x){x.classList.toggle("sel",x===btn);});
+  var tot=Object.values(scores).reduce(function(a,b){return a+b;},0);
+  document.getElementById("score-total").textContent="Score: "+tot+" / 20";
+});
+document.getElementById("d-outcome").addEventListener("change",function(){
+  document.getElementById("loss-wrap").style.display=(this.value==="lost"||this.value==="maybe")?"block":"none";
+});
+var FU_PLANS={
+  maybe:[[0,"Same-day recap in their words, before 6pm"],[2,"Answer the open objection or send the matched story"],[5,"Value drop, useful and specific, no pitch"],[9,"Direct close: “Shall I book you in this week?”"],[12,"Close the file if silent"]],
+  deposit:[[0,"Send deposit link and recap today"],[3,"Confirm start date and session one in the diary"]],
+  won:[[0,"Payment link plus onboarding note today"],[1,"Session one confirmed in both diaries"]]
+};
+document.getElementById("save-call").addEventListener("click",function(){
+  var name=document.getElementById("d-name").value.trim();
+  var outcome=document.getElementById("d-outcome").value;
+  if(!name){document.getElementById("d-name").focus();return;}
+  if(!outcome){document.getElementById("d-outcome").focus();return;}
+  var call={id:uid(),date:today(),name:name,scores:Object.assign({},scores),
+    outcome:outcome,loss:(outcome==="lost"||outcome==="maybe")?document.getElementById("d-loss").value:"",
+    notes:document.getElementById("d-notes").value.trim(),followups:[]};
+  (FU_PLANS[outcome]||[]).forEach(function(f){call.followups.push({due:addDays(call.date,f[0]),label:f[1],done:false});});
+  state.calls.push(call);save();
+  var msg=document.getElementById("call-saved");msg.style.display="block";
+  msg.textContent="Logged. "+(call.followups.length?call.followups.length+" follow-ups queued in Pipeline.":"No follow-ups queued.");
+  scores={};document.querySelectorAll(".seg3 button").forEach(function(b){b.classList.remove("sel");});
+  document.getElementById("score-total").textContent="Score: 0 / 20";
+  document.getElementById("d-name").value="";document.getElementById("d-outcome").value="";
+  document.getElementById("d-notes").value="";document.getElementById("loss-wrap").style.display="none";
+});
+
+/* ---------- pipeline ---------- */
+var OUTCOME_LABEL={won:["Closed won","won"],deposit:["Deposit","won"],maybe:["Follow-up","open"],lost:["Lost","lost"],peer:["Peer","na"]};
+var LOSS_LABEL={price:"price / cost never quantified",partner:"partner, no dated step",trust:"trust, burned before",timing:"timing and energy",fit:"not ICP",noask:"never asked"};
+function renderPipeline(){
+  var calls=state.calls;
+  var sales=calls.filter(function(c){return c.outcome!=="peer";});
+  var won=sales.filter(function(c){return c.outcome==="won"||c.outcome==="deposit";}).length;
+  var pending=[];calls.forEach(function(c){c.followups.forEach(function(f){if(!f.done)pending.push({c:c,f:f});});});
+  var dueNow=pending.filter(function(x){return x.f.due<=today();}).length;
+  var avg=0;var scored=calls.filter(function(c){return Object.keys(c.scores).length;});
+  if(scored.length){avg=Math.round(scored.reduce(function(a,c){return a+Object.values(c.scores).reduce(function(x,y){return x+y;},0);},0)/scored.length);}
+  document.getElementById("tiles").innerHTML=
+    tile(sales.length,"Sales calls logged")+
+    tile(sales.length?Math.round(100*won/sales.length)+"%":"–","Close rate")+
+    tile(scored.length?avg+" / 20":"–","Avg scorecard")+
+    tile(dueNow,"Follow-ups due",dueNow>0);
+  /* follow-ups */
+  var fl=document.getElementById("fu-list");
+  if(!pending.length){fl.innerHTML='<p class="hint">Nothing pending. Log a call with a "no decision" outcome and the schedule appears here.</p>';}
+  else{
+    pending.sort(function(a,b){return a.f.due<b.f.due?-1:1;});
+    fl.innerHTML=pending.map(function(x){
+      var cls=x.f.due<today()?"overdue":(x.f.due===today()?"due":"future");
+      var when=x.f.due<today()?"overdue · "+x.f.due:(x.f.due===today()?"today":x.f.due);
+      return '<div class="fu '+cls+'"><span class="who">'+esc(x.c.name)+'</span><span class="what">'+esc(x.f.label)+'</span><span class="when">'+when+'</span><button class="btn secondary" data-done="'+x.c.id+"|"+esc(x.f.label)+'">Done</button></div>';
+    }).join("");
+  }
+  /* weak bars */
+  var wb=document.getElementById("weak-bars");
+  if(!scored.length){wb.innerHTML='<p class="hint">Score a call first.</p>';}
+  else{
+    var rows=BEHAVIOURS.map(function(b){
+      var vals=scored.filter(function(c){return b.k in c.scores;}).map(function(c){return c.scores[b.k];});
+      var a=vals.length?vals.reduce(function(x,y){return x+y;},0)/vals.length:0;
+      return {t:b.t,pct:Math.round(50*a)};
+    }).sort(function(a,b){return a.pct-b.pct;});
+    wb.innerHTML=rows.map(function(r){
+      return '<div class="bar-row"><span>'+r.t+'</span><div class="bar-track"><div class="bar-fill" style="width:'+r.pct+'%"></div></div><span class="bar-val">'+r.pct+"%</span></div>";
+    }).join("");
+  }
+  /* log table */
+  var tb=document.querySelector("#log-table tbody");
+  if(!calls.length){tb.innerHTML='<tr><td colspan="6" class="hint">No calls logged yet.</td></tr>';}
+  else{
+    tb.innerHTML=calls.slice().reverse().map(function(c){
+      var tot=Object.values(c.scores).reduce(function(a,b){return a+b;},0);
+      var ol=OUTCOME_LABEL[c.outcome]||[c.outcome,"na"];
+      var loss=c.loss?'<br><small style="color:var(--ink-3)">'+esc(LOSS_LABEL[c.loss]||c.loss)+"</small>":"";
+      return "<tr><td class='num'>"+c.date+"</td><td>"+esc(c.name)+"</td><td class='num'>"+(Object.keys(c.scores).length?tot+"/20":"–")+
+        '</td><td><span class="pill '+ol[1]+'">'+ol[0]+"</span>"+loss+"</td><td>"+esc(c.notes||"")+
+        '</td><td><button class="btn secondary" style="font-size:12px;padding:4px 9px" data-del="'+c.id+'">Delete</button></td></tr>';
+    }).join("");
+  }
+}
+function tile(v,k,alert){return '<div class="tile"><div class="v"'+(alert?' style="color:var(--bad)"':"")+">"+v+'</div><div class="k">'+k+"</div></div>";}
+document.getElementById("tab-pipeline").addEventListener("click",function(e){
+  var d=e.target.closest("button[data-done]");
+  if(d){var parts=d.dataset.done.split("|");var c=state.calls.find(function(x){return x.id===parts[0];});
+    if(c){var f=c.followups.find(function(x){return x.label===parts.slice(1).join("|")&&!x.done;});if(f)f.done=true;save();renderPipeline();}return;}
+  var del=e.target.closest("button[data-del]");
+  if(del){state.calls=state.calls.filter(function(x){return x.id!==del.dataset.del;});save();renderPipeline();}
+});
+
+renderStage();refreshProspectSelect();gateUpdate();
+})();
+</script>
+
+</html>
